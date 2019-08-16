@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>汤老湿的博客</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+  <link rel="stylesheet" href="assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <style>
+    [v-cloak] {
+        display: none;
+    }
+  </style>
+</head>
+
+<body id="blog">
+
+<div id="app">
+<header class="am-g am-g-fixed blog-fixed blog-text-center blog-header">
+    <div class="am-u-sm-2">
+        <button type="button" class="am-btn am-btn-default am-round" v-on:click="main_page()">主页</button>
+    </div>
+    <div class="am-u-sm-8 am-u-sm-centered">
+        <h2 class="am-hide-sm-only">汤老湿的博客</h2>
+    </div>
+</header>
+<hr>
+
+<!-- content srart -->
+<div class="am-g am-g-fixed blog-fixed">
+    <div class="am-u-md-8 am-u-sm-12" v-show="blog.blog_id == null" v-cloak>
+
+        <article class="am-g blog-entry-article" v-for="blog in blogs">
+            <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
+                <span><a href="" class="blog-color">{{tag_id2name(blog.tag_id)}} &nbsp;</a></span>
+                <span> @汤老湿 &nbsp;</span>
+                <span>{{blog.create_time}}</span>
+                <h1><a v-on:click="get_blog(blog.blog_id)">{{blog.title}}</a></h1>
+                <p>我是摘要信息</p>
+                <p><a href="" class="blog-continue">continue reading</a></p>
+            </div>
+        </article>
+
+    </div>
+    <div class="am-u-md-8 am-u-sm-12" v-show="blog.blog_id != null">
+        <article id="test-editormd-view">
+
+        </article>
+    </div>
+
+    <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
+        <div class="blog-sidebar-widget blog-bor">
+            <h2 class="blog-text-center blog-title"><span>About ME</span></h2>
+            <img src="assets/i/f14.jpg" alt="about me" class="blog-entry-img" >
+            <p v-cloak>{{author}}</p>
+            <p>
+        我是汤老湿, 教大家写代码
+        </p><p>我不想成为一个庸俗的人。十年百年后，当我们死去，质疑我们的人同样死去，后人看到的是裹足不前、原地打转的你，还是一直奔跑、走到远方的我？</p>
+        </div>
+        <div class="blog-sidebar-widget blog-bor">
+            <h2 class="blog-text-center blog-title"><span>Contact ME</span></h2>
+            <p>
+                <a href=""><span class="am-icon-qq am-icon-fw am-primary blog-icon"></span></a>
+                <a href=""><span class="am-icon-github am-icon-fw blog-icon"></span></a>
+                <a href=""><span class="am-icon-weibo am-icon-fw blog-icon"></span></a>
+                <a href=""><span class="am-icon-reddit am-icon-fw blog-icon"></span></a>
+                <a href=""><span class="am-icon-weixin am-icon-fw blog-icon"></span></a>
+            </p>
+        </div>
+        <div class="blog-clear-margin blog-sidebar-widget blog-bor am-g ">
+            <h2 class="blog-title"><span>TAG cloud</span></h2>
+            <div class="am-u-sm-12 blog-clear-padding">
+            <a href="" class="blog-tag" v-for="tag in tags">{{tag.tag_name}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- content end -->
+
+
+
+  <footer class="blog-footer">
+    <div class="blog-text-center">© 2019 by 汤老湿</div>    
+  </footer>
+</div>
+
+
+
+
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+<script src="assets/js/amazeui.min.js"></script>
+
+<!-- 引入 Vue 来完成更丰富的功能 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 引入 Editor.md 完成 markdown 的操作-->
+<script src="/editor.md/lib/marked.min.js"></script>
+<script src="/editor.md/lib/prettify.min.js"></script>
+<script src="/editor.md/lib/raphael.min.js"></script>
+<script src="/editor.md/lib/underscore.min.js"></script>
+<script src="/editor.md/lib/sequence-diagram.min.js"></script>
+<script src="/editor.md/lib/flowchart.min.js"></script>
+<script src="/editor.md/lib/jquery.flowchart.min.js"></script>
+<script src="/editor.md/editormd.js"></script>
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        author: '汤老湿',
+        blogs: [
+            {
+                "blog_id": 1,
+                "title": "我的第一篇博客",
+                "tag_id": 1,
+                "create_time": "2019/05/14 12:00"
+            },
+            {
+                "blog_id": 2,
+                "title": "C 语言的类型",
+                "tag_id": 1,
+                "create_time": "2019/05/14 12:00"
+            }
+        ],
+        tags: [
+            {
+                "tag_id": 1,
+                "tag_name": "C语言"
+            },
+            {
+                "tag_id": 2,
+                "tag_name": "数据结构"
+            }
+        ],
+        blog: {
+            title: "",
+            content: "",
+            blog_id: null,
+            tag_id: null,           
+        }, // 表示当前博客信息, 是一个对象
+    },
+    methods: {
+        tag_id2name(tag_id) {
+            // 注意, 要访问 tags 和 blogs 需要带 this
+            for(var index in this.tags) {
+                if (this.tags[index].tag_id == tag_id) {
+                    return this.tags[index].tag_name;
+                }
+            }
+            return "默认";
+        },
+        get_blogs(tag_id) {
+            var url = "blog";
+            if (tag_id != null) {
+                url = "/blog?tag_id=" + tag_id;
+            }
+            $.ajax({
+                url: url,
+                type: "get",
+                context: this,
+                success: function(data, status) {
+                    this.blogs = data
+                }
+            }) 
+        },
+        init() {
+            $.ajax({
+                url: "/tag",
+                type: "get",
+                context: this,
+                async: false,
+                success: function(data, status) {
+                    this.tags = data;
+                    // 在获取到 tags 之后再获取 blogs, 防止时序上出现问题
+                    this.get_blogs();
+                }
+            });
+        },
+        get_blog(blog_id) {
+            $.ajax({
+                url: "/blog/" + blog_id,
+                type: "get",
+                context: this,
+                async: false,
+                success: function(data, status) {
+                    this.blog = data;
+                    // 需要先清理上次的结果, 再填充新结果
+                    $('#test-editormd-view').empty();
+                    testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                        markdown        : this.blog.content ,//+ "\r\n" + $("#append-test").text(),
+                        //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                        htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                        //toc             : false,
+                        tocm            : true,    // Using [TOCM]
+                        //tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+                        //gfm             : false,
+                        //tocDropdown     : true,
+                        // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+                        emoji           : true,
+                        taskList        : true,
+                        tex             : true,  // 默认不解析
+                        flowChart       : true,  // 默认不解析
+                        sequenceDiagram : true,  // 默认不解析
+                    });
+                }
+            });
+        },
+        main_page() {
+            this.blog.blog_id = null
+            this.blog.tag_id = null
+            this.blog.title = ""
+            this.blog.content = ""
+        }
+    },
+});
+app.init()
+</script>
+</body>
+</html>

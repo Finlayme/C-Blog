@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>新增博客</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+  <link rel="stylesheet" href="assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+  <style>
+    [v-cloak] {
+        display: none;
+    }
+  </style>
+</head>
+
+<body id="blog">
+
+<div id="app">
+<header class="am-g am-g-fixed blog-fixed blog-text-center blog-header">
+    <div class="am-u-sm-2">
+        <button type="button" class="am-btn am-btn-default am-round" v-on:click="main_page()">主页</button>
+    </div>
+    <div class="am-u-sm-8">
+        <h2 class="am-hide-sm-only">新增博客</h2>
+    </div>
+    <div class="am-u-sm-2">
+        <button type="button" class="am-btn am-btn-default am-round" v-on:click="insert_blog()" v-cloak>提交</button>
+    </div>
+</header>
+<hr>
+
+<!-- content start -->
+<div class="am-g am-g-fixed blog-fixed">
+
+    <div class="am-u-md-12 am-u-sm-12">
+        <input type="text" class="am-form-field" v-model="blog.title">
+        <div id="test-editor">
+            <!-- 此处必须要使用 v-model 否则 Editor.md 一个渲染就会破坏 Vue 的数据绑定 -->
+            <textarea v-model="blog.content" style="display: none"></textarea>
+        </div>
+    </div>
+
+</div>
+<!-- content end -->
+
+
+
+  <footer class="blog-footer">
+    <div class="blog-text-center">© 2019 by 汤老湿</div>    
+  </footer>
+</div>
+
+
+
+
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+<script src="assets/js/amazeui.min.js"></script>
+
+<!-- 引入 Vue 来完成更丰富的功能 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 引入 Editor.md 完成 markdown 的操作-->
+<!-- <script src="/editor.md/lib/marked.min.js"></script>
+<script src="/editor.md/lib/prettify.min.js"></script>
+<script src="/editor.md/lib/raphael.min.js"></script>
+<script src="/editor.md/lib/underscore.min.js"></script>
+<script src="/editor.md/lib/sequence-diagram.min.js"></script>
+<script src="/editor.md/lib/flowchart.min.js"></script>
+<script src="/editor.md/lib/jquery.flowchart.min.js"></script> -->
+<script src="/editor.md/editormd.js"></script>
+<script>
+var editor = null;
+var app = new Vue({
+    el: '#app',
+    data: {
+        blog: {
+            title: "",
+            content: "",
+            tag_id: -1,
+        }, // 表示当前博客信息, 是一个对象
+    },
+    methods: {
+        init() {
+            editor = editormd("test-editor", {
+                width: "100%",
+                height: "740px",
+                path: "editor.md/lib/"
+            });
+        },
+        insert_blog() {
+            // 1. 先获取到博客内容
+            var content = editor.getMarkdown()
+            var body = {
+                title: this.blog.title,
+                content: content,
+                tag_id: this.blog.tag_id,
+                create_time: new Date().toLocaleString(),
+            }
+            // 2. 构造 http 请求发送给服务器即可
+            $.ajax({
+                url: "/blog",
+                type: "post",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(body),
+                context: this,
+                success: function(data, status) {
+                    alert("提交成功!");
+                    $(window).attr('location', '/admin.html')
+                }
+            });
+        }
+    },
+});
+app.init()
+</script>
+</body>
+</html>
